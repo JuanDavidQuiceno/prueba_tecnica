@@ -136,38 +136,46 @@ class SplashScreenState extends State<SplashScreen>
       height: screenSize.height,
       width: screenSize.width,
       alignment: Alignment.center,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CustomImage(
-                  iconApp,
-                  width: screenSize.width * 0.7,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(
+                top: screenSize.height * 0.3,
+                bottom: screenSize.height * 0.3,
+              ),
+              child: Hero(
+                tag: 'Catbreeds',
+                child: Text(
+                  'Catbreeds',
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 20),
-                Container(
-                  width: ResponsiveContent.isMobile(context)
-                      ? screenSize.width * 0.60
-                      : screenSize.width * 0.30,
-                  margin: const EdgeInsets.only(bottom: 20),
-                  padding: EdgeInsets.zero,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: LinearProgressIndicator(
-                      minHeight: 5,
-                      value: animation.value,
-                      color: AppColors.primaryColor,
-                      backgroundColor: AppColors.grey,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
+            CustomImage(
+              iconApp,
+              height: screenSize.height * 0.25,
+            ),
+            const SizedBox(height: 20),
+            Container(
+              width: ResponsiveContent.isMobile(context)
+                  ? screenSize.width * 0.60
+                  : screenSize.width * 0.30,
+              margin: const EdgeInsets.only(bottom: 20),
+              padding: EdgeInsets.zero,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: LinearProgressIndicator(
+                  minHeight: 5,
+                  value: animation.value,
+                  color: AppColors.primaryColor,
+                  backgroundColor: AppColors.grey,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

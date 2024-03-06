@@ -12,5 +12,5 @@ class HomeEndpoint extends EndpointConfig {
       };
 
   @override
-  String get path => 'api/auth/validate-code';
+  String get path => 'v1/breeds';
 }

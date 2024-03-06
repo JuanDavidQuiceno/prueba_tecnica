@@ -2,12 +2,12 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:logger/logger.dart';
 import 'package:prueba_tecnica/src/common/theme/theme.dart';
+import 'package:prueba_tecnica/src/feacture/splash/splash_screen.dart';
 
 class AppDevelopment extends StatefulWidget {
   const AppDevelopment({super.key});
@@ -20,13 +20,13 @@ class _AppDevelopmentState extends State<AppDevelopment> {
   @override
   void initState() {
     // color de los status bar
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.black,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.light,
-      ),
-    );
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   const SystemUiOverlayStyle(
+    //     statusBarColor: Colors.black,
+    //     statusBarIconBrightness: Brightness.light,
+    //     statusBarBrightness: Brightness.light,
+    //   ),
+    // );
     if (!kReleaseMode) {
       final logger = Logger();
       logger.d('App started');
@@ -53,8 +53,8 @@ class _AppDevelopmentState extends State<AppDevelopment> {
     return MaterialApp(
       title: 'Dev Feat. Distribuidores',
       debugShowCheckedModeBanner: false,
-      // initialRoute: SplashScreen.routeName,
-      // home: const SplashScreen(),
+      initialRoute: SplashScreen.routeName,
+      home: const SplashScreen(),
       theme: lightThemeData,
       // mantener escala de fuente
       builder: (context, child) {

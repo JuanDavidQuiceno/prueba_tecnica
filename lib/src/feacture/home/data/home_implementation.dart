@@ -11,7 +11,14 @@ class HomeImplementation extends HomeRepository {
   Future<List<HomeModel>> getHome() async {
     final data = await apiSdk.run(endpoint: HomeEndpoint());
     if (data.statusCode == 200) {
-      return [];
+      final result = data.body?['data'] as List<dynamic>;
+      return List<HomeModel>.from(
+        result.map(
+          (e) {
+            return HomeModel.fromJson(e as Map<String, dynamic>);
+          },
+        ),
+      );
     } else {
       throw Exception('Error al obtener los datos del home');
     }

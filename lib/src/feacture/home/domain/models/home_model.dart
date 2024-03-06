@@ -72,33 +72,77 @@ class HomeModel {
         countryCode: json['country_code']?.toString(),
         description: json['description']?.toString(),
         lifeSpan: json['life_span']?.toString(),
-        indoor: int.tryParse(json['indoor']!.toString()),
-        lap: int.tryParse(json['lap']!.toString()),
+        indoor: json['indoor'] == null
+            ? null
+            : int.tryParse(json['indoor']!.toString()),
+        lap: json['lap'] == null ? null : int.tryParse(json['lap']!.toString()),
         altNames: json['alt_names']?.toString(),
-        adaptability: int.tryParse(json['adaptability']!.toString()),
-        affectionLevel: int.tryParse(json['affection_level']!.toString()),
-        childFriendly: int.tryParse(json['child_friendly']!.toString()),
-        dogFriendly: int.tryParse(json['dog_friendly']!.toString()),
-        energyLevel: int.tryParse(json['energy_level']!.toString()),
-        grooming: int.tryParse(json['grooming']!.toString()) ?? 0,
-        healthIssues: int.tryParse(json['health_issues']!.toString()),
-        intelligence: int.tryParse(json['intelligence']!.toString()),
-        sheddingLevel: int.tryParse(json['shedding_level']!.toString()),
-        socialNeeds: int.tryParse(json['social_needs']!.toString()),
-        strangerFriendly: int.tryParse(json['stranger_friendly']!.toString()),
-        vocalisation: int.tryParse(json['vocalisation']!.toString()),
-        experimental: int.tryParse(json['experimental']!.toString()),
-        hairless: int.tryParse(json['hairless']!.toString()),
-        natural: int.tryParse(json['natural']!.toString()),
-        rare: int.tryParse(json['rare']!.toString()),
-        rex: int.tryParse(json['rex']!.toString()),
-        suppressedTail: int.tryParse(json['suppressed_tail']!.toString()),
-        shortLegs: int.tryParse(json['short_legs']!.toString()),
+        adaptability: json['adaptability'] == null
+            ? null
+            : int.tryParse(json['adaptability']!.toString()),
+        affectionLevel: json['affection_level'] == null
+            ? null
+            : int.tryParse(json['affection_level']!.toString()),
+        childFriendly: json['child_friendly'] == null
+            ? null
+            : int.tryParse(json['child_friendly']!.toString()),
+        dogFriendly: json['dog_friendly'] == null
+            ? null
+            : int.tryParse(json['dog_friendly']!.toString()),
+        energyLevel: json['energy_level'] == null
+            ? null
+            : int.tryParse(json['energy_level']!.toString()),
+        grooming: json['grooming'] == null
+            ? null
+            : int.tryParse(json['grooming']!.toString()),
+        healthIssues: json['health_issues'] == null
+            ? null
+            : int.tryParse(json['health_issues']!.toString()),
+        intelligence: json['intelligence'] == null
+            ? null
+            : int.tryParse(json['intelligence']!.toString()),
+        sheddingLevel: json['shedding_level'] == null
+            ? null
+            : int.tryParse(json['shedding_level']!.toString()),
+        socialNeeds: json['social_needs'] == null
+            ? null
+            : int.tryParse(json['social_needs']!.toString()),
+        strangerFriendly: json['stranger_friendly'] == null
+            ? null
+            : int.tryParse(json['stranger_friendly']!.toString()),
+        vocalisation: json['vocalisation'] == null
+            ? null
+            : int.tryParse(json['vocalisation']!.toString()),
+        experimental: json['experimental'] == null
+            ? null
+            : int.tryParse(json['experimental']!.toString()),
+        hairless: json['hairless'] == null
+            ? null
+            : int.tryParse(json['hairless']!.toString()),
+        natural: json['natural'] == null
+            ? null
+            : int.tryParse(json['natural']!.toString()),
+        rare: json['rare'] == null
+            ? null
+            : int.tryParse(json['rare']!.toString()),
+        rex: json['rex'] == null ? null : int.tryParse(json['rex']!.toString()),
+        suppressedTail: json['suppressed_tail'] == null
+            ? null
+            : int.tryParse(json['suppressed_tail']!.toString()),
+        shortLegs: json['short_legs'] == null
+            ? null
+            : int.tryParse(json['short_legs']!.toString()),
         wikipediaUrl: json['wikipedia_url']?.toString(),
-        hypoallergenic: int.tryParse(json['hypoallergenic']!.toString()),
+        hypoallergenic: json['hypoallergenic'] == null
+            ? null
+            : int.tryParse(json['hypoallergenic']!.toString()),
         referenceImageId: json['reference_image_id']?.toString(),
-        catFriendly: int.tryParse(json['cat_friendly']!.toString()),
-        bidability: int.tryParse(json['bidability']!.toString()),
+        catFriendly: json['cat_friendly'] == null
+            ? null
+            : int.tryParse(json['cat_friendly']!.toString()),
+        bidability: json['bidability'] == null
+            ? null
+            : int.tryParse(json['bidability']!.toString()),
       );
   Weight? weight;
   String? id;
@@ -272,8 +316,8 @@ class Weight {
     this.metric,
   });
   factory Weight.fromJson(Map<String, dynamic> json) => Weight(
-        imperial: json['imperial'].toString(),
-        metric: json['metric'].toString(),
+        imperial: json['imperial']?.toString(),
+        metric: json['metric']?.toString(),
       );
   String? imperial;
   String? metric;

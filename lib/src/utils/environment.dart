@@ -8,6 +8,6 @@ class Network {
   const Network._();
 
   Map<String, String> get headers => const {
-        'x-api-key:': String.fromEnvironment('x-api-key'),
+        'x-api-key': String.fromEnvironment('x-api-key'),
       };
 }

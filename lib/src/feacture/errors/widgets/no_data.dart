@@ -2,6 +2,7 @@ import 'package:custom_image/custom_image.dart';
 
 import 'package:flutter/material.dart';
 import 'package:prueba_tecnica/src/feacture/widgets/buttons/custom_elevated_button.dart';
+import 'package:prueba_tecnica/src/utils/image_app.dart';
 import 'package:prueba_tecnica/src/utils/utils.dart';
 
 class NoData extends StatelessWidget {
@@ -32,7 +33,7 @@ class NoData extends StatelessWidget {
         children: [
           FittedBox(
             child: CustomImage(
-              image ?? 'assets/images/no_data/no_data_rafiki.svg',
+              image ?? imageNotFound,
               fit: fit ?? BoxFit.contain,
               height: heightImage ?? 200,
               width: widthImage ?? 200,
