@@ -2,6 +2,7 @@ import 'package:custom_image/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba_tecnica/src/feature/home/domain/models/home_model.dart';
 import 'package:prueba_tecnica/src/feature/home/presentation/home/car_detailt/cat_detail_scree.dart';
+import 'package:prueba_tecnica/src/utils/environment.dart';
 
 class CatCard extends StatelessWidget {
   const CatCard({required this.catModel, super.key});
@@ -50,10 +51,13 @@ class CatCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: CustomImage(
-                  catModel.wikipediaUrl ?? '',
-                  type: ImageType.network,
-                  height: size.height * 0.4,
+                child: Hero(
+                  tag: '${catModel.id}${catModel.referenceImageId!}',
+                  child: CustomImage(
+                    '${Environment.network.urlCatImage}/${catModel.referenceImageId}.jpg',
+                    type: ImageType.network,
+                    height: size.height * 0.4,
+                  ),
                 ),
               ),
               Row(

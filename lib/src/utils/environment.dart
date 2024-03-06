@@ -10,4 +10,6 @@ class Network {
   Map<String, String> get headers => const {
         'x-api-key': String.fromEnvironment('x-api-key'),
       };
+
+  String get urlCatImage => const String.fromEnvironment('URL_CAT_IMAGE');
 }

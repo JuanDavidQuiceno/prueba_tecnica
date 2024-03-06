@@ -8,3 +8,11 @@ sealed class HomeEvent extends Equatable {
 }
 
 final class GetHomeEvent extends HomeEvent {}
+
+final class SearchHomeEvent extends HomeEvent {
+  const SearchHomeEvent(this.query);
+  final String query;
+
+  @override
+  List<Object> get props => [query];
+}

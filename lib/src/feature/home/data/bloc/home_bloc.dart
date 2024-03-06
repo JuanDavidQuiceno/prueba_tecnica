@@ -13,6 +13,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(const HomeInitial([])) {
     on<HomeEvent>((event, emit) {});
     on<GetHomeEvent>(_getHomeEvent);
+    on<SearchHomeEvent>(_searchHomeEvent);
   }
 
   FutureOr<void> _getHomeEvent(
@@ -34,5 +35,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     }
+  }
+
+  FutureOr<void> _searchHomeEvent(
+    SearchHomeEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(HomeLoadingState(state.catModel));
+    final catModelSearch = state.catModel
+        .where(
+          (element) => element.name!.toLowerCase().contains(event.query),
+        )
+        .toList();
+    // ignore: inference_failure_on_instance_creation
+    await Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      return emit(
+        HomeSearchState(
+          catModel: state.catModel,
+          catModelSearch: catModelSearch,
+        ),
+      );
+    });
   }
 }

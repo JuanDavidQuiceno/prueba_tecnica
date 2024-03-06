@@ -11,6 +11,15 @@ final class HomeInitial extends HomeState {
   const HomeInitial(super.catModel);
 }
 
+final class HomeSearchState extends HomeState {
+  // const HomeSearchState(super.catModel);
+  const HomeSearchState({
+    required List<CatModel> catModel,
+    required this.catModelSearch,
+  }) : super(catModel);
+  final List<CatModel> catModelSearch;
+}
+
 final class HomeLoadingState extends HomeState {
   const HomeLoadingState(super.hCatModel);
 }

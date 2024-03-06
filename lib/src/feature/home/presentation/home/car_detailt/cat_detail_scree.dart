@@ -1,6 +1,7 @@
 import 'package:custom_image/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba_tecnica/src/feature/home/domain/models/home_model.dart';
+import 'package:prueba_tecnica/src/utils/environment.dart';
 
 class CatDetailtScreen extends StatelessWidget {
   const CatDetailtScreen({required this.catModel, super.key});
@@ -13,20 +14,17 @@ class CatDetailtScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Hero(
-          tag: '',
-          child: Text(
-            catModel.name ?? '',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+        title: Text(
+          catModel.name ?? '',
+          style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
       body: Column(
         children: [
-          SizedBox(
-            height: size.height * 0.5,
+          Hero(
+            tag: '${catModel.id}${catModel.referenceImageId!}',
             child: CustomImage(
-              catModel.wikipediaUrl ?? '',
+              '${Environment.network.urlCatImage}/${catModel.referenceImageId}.jpg',
               type: ImageType.network,
               height: size.height * 0.5,
             ),

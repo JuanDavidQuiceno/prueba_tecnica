@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prueba_tecnica/src/common/theme/colors.dart';
+import 'package:prueba_tecnica/src/common/theme/inputs/input_decoration.dart';
+import 'package:prueba_tecnica/src/common/theme/inputs/style_text_field.dart';
 import 'package:prueba_tecnica/src/feature/errors/widgets/no_data.dart';
 import 'package:prueba_tecnica/src/feature/home/data/bloc/home_bloc.dart';
 import 'package:prueba_tecnica/src/feature/home/widgets/cat_card.dart';
@@ -15,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late HomeBloc homeBloc;
+  TextEditingController controller = TextEditingController();
   @override
   // ignore: always_declare_return_types, type_annotate_public_apis
   initState() {
@@ -25,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   // ignore: always_declare_return_types, type_annotate_public_apis
   dispose() {
+    homeBloc.close();
+    controller.dispose();
     super.dispose();
   }
 
@@ -41,36 +47,80 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: BlocBuilder<HomeBloc, HomeState>(
-        bloc: homeBloc,
-        builder: (context, state) {
-          if (state is HomeLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is HomeErrorState) {
-            return NoData(
-              message: state.message,
-              onPressed: () {
-                homeBloc.add(GetHomeEvent());
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              controller: controller,
+              keyboardType: TextInputType.text,
+              onTapOutside: (value) {
+                FocusScope.of(context).unfocus();
               },
-            );
-          } else if (state.catModel.isEmpty) {
-            return NoData(
-              image: imageNotFound,
-              message: 'No hay datos',
-              onPressed: () {
-                homeBloc.add(GetHomeEvent());
-              },
-            );
-          } else {
-            return Column(
-              children: [
-                const SizedBox(
-                  height: 20,
+              decoration: StyleTextField.inputDecoration(
+                context,
+                hintText: 'Buscar',
+                isDense: true,
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: AppColors.textColor,
                 ),
-                Expanded(
-                  child: ListView.builder(
+              ),
+              onChanged: (value) {
+                homeBloc.add(SearchHomeEvent(value));
+              },
+            ),
+          ),
+          Expanded(
+            child: BlocBuilder<HomeBloc, HomeState>(
+              bloc: homeBloc,
+              builder: (context, state) {
+                // Estado para mostar carga de datos
+                if (state is HomeLoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                  // estado para mostrar error
+                } else if (state is HomeErrorState) {
+                  return NoData(
+                    message: state.message,
+                    onPressed: () {
+                      homeBloc.add(GetHomeEvent());
+                    },
+                  );
+                  // estado para mostrar busqueda
+                } else if (state is HomeSearchState) {
+                  // en caso de que no haya datos
+                  if (state.catModelSearch.isEmpty) {
+                    return const NoData(
+                      image: imageNotFound,
+                      message: 'No hay datos',
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: state.catModelSearch.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 10,
+                        ),
+                        child: CatCard(
+                          catModel: state.catModelSearch[index],
+                        ),
+                      );
+                    },
+                  );
+                } else if (state.catModel.isEmpty) {
+                  return NoData(
+                    image: imageNotFound,
+                    message: 'No hay datos',
+                    onPressed: () {
+                      homeBloc.add(GetHomeEvent());
+                    },
+                  );
+                } else {
+                  return ListView.builder(
                     itemCount: state.catModel.length,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -83,12 +133,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     },
-                  ),
-                ),
-              ],
-            );
-          }
-        },
+                  );
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
