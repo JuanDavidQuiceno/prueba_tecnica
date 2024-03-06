@@ -10,7 +10,7 @@
             "type": "dart",
             "program": "lib/main_development.dart",
             "args": [
-                "--dart-define-from-file","api-key-dev.json",
+                "--dart-define-from-file","api-key-local.json",
             ]
         },
         {
