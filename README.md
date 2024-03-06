@@ -1,16 +1,31 @@
 # prueba_tecnica
 
-A new Flutter project.
+## Requisitos
 
-## Getting Started
+- Flutter versión 3.19.0
 
-This project is a starting point for a Flutter application.
+## Configuración
 
-A few resources to get you started if this is your first Flutter project:
+1. Creación de variables de entorno:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+   - A nivel de la raíz del proyecto, crear un archivo `api-key-local.json` y agregar tus claves de API.
+   - Cree los archivos necesarios para los diferentes entornos (desarrollo, producción, etc.) y modifique el archivo `launch.json` de Visual Studio Code para que apunte al archivo correspondiente.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. Configuración de Visual Studio Code (VSCode):
+   - Verifica si existe un directorio `.vscode` en la raíz del proyecto. Si no existe, créalo.
+   - Dentro del directorio `.vscode`, crea o edita el archivo `launch.json` y añade lo siguiente:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "prueba_tecnica",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_development.dart",
+      "args": ["--dart-define-from-file", "api-key-local.json"]
+    }
+  ]
+}
+```
