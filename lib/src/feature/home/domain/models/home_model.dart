@@ -1,19 +1,19 @@
 // To parse this JSON data, do
 //
-//     final homeModel = homeModelFromJson(jsonString);
+//     final CatModel = CatModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<HomeModel> homeModelFromJson(String str) => List<HomeModel>.from(
+List<CatModel> catModelFromJson(String str) => List<CatModel>.from(
       (json.decode(str) as List<dynamic>)
-          .map((x) => HomeModel.fromJson(x as Map<String, dynamic>)),
+          .map((x) => CatModel.fromJson(x as Map<String, dynamic>)),
     );
 
-String homeModelToJson(List<HomeModel> data) =>
+String catModelToJson(List<CatModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class HomeModel {
-  HomeModel({
+class CatModel {
+  CatModel({
     this.weight,
     this.id,
     this.name,
@@ -55,7 +55,7 @@ class HomeModel {
     this.bidability,
   });
 
-  factory HomeModel.fromJson(Map<String, dynamic> json) => HomeModel(
+  factory CatModel.fromJson(Map<String, dynamic> json) => CatModel(
         weight: json['weight'] == null
             ? null
             : Weight.fromJson(
@@ -184,7 +184,7 @@ class HomeModel {
   int? catFriendly;
   int? bidability;
 
-  HomeModel copyWith({
+  CatModel copyWith({
     Weight? weight,
     String? id,
     String? name,
@@ -225,7 +225,7 @@ class HomeModel {
     int? catFriendly,
     int? bidability,
   }) =>
-      HomeModel(
+      CatModel(
         weight: weight ?? this.weight,
         id: id ?? this.id,
         name: name ?? this.name,

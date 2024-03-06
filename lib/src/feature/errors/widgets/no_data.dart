@@ -1,7 +1,7 @@
 import 'package:custom_image/custom_image.dart';
 
 import 'package:flutter/material.dart';
-import 'package:prueba_tecnica/src/feacture/widgets/buttons/custom_elevated_button.dart';
+import 'package:prueba_tecnica/src/feature/widgets/buttons/custom_elevated_button.dart';
 import 'package:prueba_tecnica/src/utils/image_app.dart';
 import 'package:prueba_tecnica/src/utils/utils.dart';
 

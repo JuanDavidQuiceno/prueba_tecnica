@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prueba_tecnica/src/common/bloc/auth/auth_bloc.dart';
 import 'package:prueba_tecnica/src/common/theme/colors.dart';
-import 'package:prueba_tecnica/src/feacture/home/presentation/home/home_screen.dart';
+import 'package:prueba_tecnica/src/feature/home/presentation/home/home_screen.dart';
 import 'package:prueba_tecnica/src/global_locator.dart';
 import 'package:prueba_tecnica/src/utils/image_app.dart';
 import 'package:responsive_content/responsive_content.dart';

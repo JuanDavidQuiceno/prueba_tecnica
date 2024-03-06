@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prueba_tecnica/src/feacture/errors/widgets/no_data.dart';
-import 'package:prueba_tecnica/src/feacture/home/data/bloc/home_bloc.dart';
+import 'package:prueba_tecnica/src/feature/errors/widgets/no_data.dart';
+import 'package:prueba_tecnica/src/feature/home/data/bloc/home_bloc.dart';
+import 'package:prueba_tecnica/src/feature/home/widgets/cat_card.dart';
 import 'package:prueba_tecnica/src/utils/image_app.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,7 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         title: Hero(
           tag: 'Catbreeds',
-          child: Text('Catbreeds'),
+          child: Text(
+            'Catbreeds',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ),
       ),
       body: BlocBuilder<HomeBloc, HomeState>(
@@ -51,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 homeBloc.add(GetHomeEvent());
               },
             );
-          } else if (state.homeModel.isEmpty) {
+          } else if (state.catModel.isEmpty) {
             return NoData(
               image: imageNotFound,
               message: 'No hay datos',
@@ -60,14 +64,28 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             );
           } else {
-            return ListView.builder(
-              itemCount: state.homeModel.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(state.homeModel[index].name ?? ''),
-                  subtitle: Text(state.homeModel[index].description ?? ''),
-                );
-              },
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: state.catModel.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 10,
+                        ),
+                        child: CatCard(
+                          catModel: state.catModel[index],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           }
         },

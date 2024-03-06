@@ -7,7 +7,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 // ignore: depend_on_referenced_packages
 import 'package:logger/logger.dart';
 import 'package:prueba_tecnica/src/common/theme/theme.dart';
-import 'package:prueba_tecnica/src/feacture/splash/splash_screen.dart';
+import 'package:prueba_tecnica/src/feature/splash/splash_screen.dart';
 
 class AppDevelopment extends StatefulWidget {
   const AppDevelopment({super.key});
@@ -51,7 +51,7 @@ class _AppDevelopmentState extends State<AppDevelopment> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dev Feat. Distribuidores',
+      title: 'Dev Catbreeds',
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.routeName,
       home: const SplashScreen(),
