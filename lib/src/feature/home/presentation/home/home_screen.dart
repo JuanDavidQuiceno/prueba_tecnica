@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prueba_tecnica/src/common/theme/colors.dart';
-import 'package:prueba_tecnica/src/common/theme/inputs/input_decoration.dart';
 import 'package:prueba_tecnica/src/common/theme/inputs/style_text_field.dart';
 import 'package:prueba_tecnica/src/feature/errors/widgets/no_data.dart';
 import 'package:prueba_tecnica/src/feature/home/data/bloc/home_bloc.dart';
