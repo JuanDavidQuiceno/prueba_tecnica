@@ -23,6 +23,7 @@ linter:
   rules:
     public_member_api_docs: false
     sort_pub_dependencies: false
+    one_member_abstracts: false
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
 

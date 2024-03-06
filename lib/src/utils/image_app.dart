@@ -1,1 +1,1 @@
-const iconApp = 'assets/images/icon_app.png';
+const iconApp = 'assets/icons/app-icon.png';

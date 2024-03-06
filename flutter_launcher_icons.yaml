@@ -1,8 +1,10 @@
 # flutter pub run flutter_launcher_icons:main
+# or flavor
+# flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons-*
 flutter_launcher_icons:
   # android: "ic_launcher"
   android: true
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/icons_app/dev-icon.png"
+  image_path: "assets/icons/app-icon.png"
   min_sdk_android: 21
