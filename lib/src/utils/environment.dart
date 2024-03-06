@@ -7,8 +7,7 @@ abstract class Environment {
 class Network {
   const Network._();
 
-  // ignore: avoid_field_initializers_in_const_classes
-  final Map<String, String> headers = const {
-    'x-api-key:': String.fromEnvironment('x-api-key'),
-  };
+  Map<String, String> get headers => const {
+        'x-api-key:': String.fromEnvironment('x-api-key'),
+      };
 }
