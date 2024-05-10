@@ -1,5 +1,5 @@
 {
     "API_URL": "https://api.itbook.store",
     "DEBUG": true,
-    "MOCK": true
+    "MOCK": false
 }
