@@ -1,7 +1,9 @@
 import 'package:api_sdk/api_sdk.dart';
 import 'package:prueba_tecnica/src/utils/environment.dart';
 
-class HomeEndpoint extends EndpointConfig {
+class SearchBookEndpoint extends EndpointConfig {
+  SearchBookEndpoint({required this.query});
+  final String query;
   @override
   Method get method => Method.get;
 
@@ -12,5 +14,5 @@ class HomeEndpoint extends EndpointConfig {
       };
 
   @override
-  String get path => 'v1/breeds';
+  String get path => '/1.0/search/$query';
 }

@@ -7,9 +7,7 @@ abstract class Environment {
 class Network {
   const Network._();
 
-  Map<String, String> get headers => const {
-        'x-api-key': String.fromEnvironment('x-api-key'),
-      };
+  Map<String, String> get headers => const {};
 
   String get urlCatImage => const String.fromEnvironment('URL_CAT_IMAGE');
 }

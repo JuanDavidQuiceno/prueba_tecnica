@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prueba_tecnica/src/common/theme/colors.dart';
 import 'package:prueba_tecnica/src/common/theme/inputs/style_text_field.dart';
 import 'package:prueba_tecnica/src/feature/errors/widgets/no_data.dart';
-import 'package:prueba_tecnica/src/feature/home/data/bloc/home_bloc.dart';
-import 'package:prueba_tecnica/src/feature/home/widgets/cat_card.dart';
+import 'package:prueba_tecnica/src/feature/home/presentation/widgets/book_card.dart';
+import 'package:prueba_tecnica/src/feature/home/state/bloc/home_bloc.dart';
 import 'package:prueba_tecnica/src/utils/image_app.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,9 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Hero(
-          tag: 'Catbreeds',
+          tag: 'Librería Antioquia',
           child: Text(
-            'Catbreeds',
+            'Librería Antioquia',
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
@@ -66,7 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               onChanged: (value) {
-                homeBloc.add(SearchHomeEvent(value));
+                if (value.isEmpty) {
+                  homeBloc.add(HomeInitialEvent());
+                } else {
+                  homeBloc.add(SearchHomeEvent(value));
+                }
               },
             ),
           ),
@@ -90,27 +94,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   // estado para mostrar busqueda
                 } else if (state is HomeSearchState) {
                   // en caso de que no haya datos
-                  if (state.catModelSearch.isEmpty) {
+                  if (state.searchbooksModel.isEmpty) {
                     return const NoData(
                       image: imageNotFound,
-                      message: 'No hay datos',
+                      message: 'No hay datos ',
                     );
                   }
                   return ListView.builder(
-                    itemCount: state.catModelSearch.length,
+                    itemCount: state.searchbooksModel.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10,
                           vertical: 10,
                         ),
-                        child: CatCard(
-                          catModel: state.catModelSearch[index],
+                        child: BookCard(
+                          bookModel: state.searchbooksModel[index],
+                          homeBloc: homeBloc,
+                          lastText: controller.text,
                         ),
                       );
                     },
                   );
-                } else if (state.catModel.isEmpty) {
+                } else if (state.booksModel.isEmpty) {
                   return NoData(
                     image: imageNotFound,
                     message: 'No hay datos',
@@ -120,15 +126,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 } else {
                   return ListView.builder(
-                    itemCount: state.catModel.length,
+                    itemCount: state.booksModel.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10,
                           vertical: 10,
                         ),
-                        child: CatCard(
-                          catModel: state.catModel[index],
+                        child: BookCard(
+                          bookModel: state.booksModel[index],
+                          homeBloc: homeBloc,
                         ),
                       );
                     },

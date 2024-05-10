@@ -1,5 +1,7 @@
-import 'package:prueba_tecnica/src/feature/home/domain/models/home_model.dart';
+import 'package:api_sdk/api_sdk.dart';
 
-abstract class CatRepository {
-  Future<List<CatModel>> getHome();
+abstract class BooksRepository {
+  Future<ResponseApiSdk> getNew();
+  Future<ResponseApiSdk> getDetail(String id);
+  Future<ResponseApiSdk> searchBook(String query);
 }

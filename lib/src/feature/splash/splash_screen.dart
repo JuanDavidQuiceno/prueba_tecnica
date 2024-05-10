@@ -146,9 +146,9 @@ class SplashScreenState extends State<SplashScreen>
                 bottom: screenSize.height * 0.3,
               ),
               child: Hero(
-                tag: 'Catbreeds',
+                tag: 'Librería Antioquia',
                 child: Text(
-                  'Catbreeds',
+                  'Librería Antioquia',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
