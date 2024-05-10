@@ -20,9 +20,9 @@ final class SearchHomeEvent extends HomeEvent {
 }
 
 final class GetDetailEvent extends HomeEvent {
-  const GetDetailEvent(this.id);
-  final String id;
+  const GetDetailEvent(this.model);
+  final BookModel model;
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [model];
 }

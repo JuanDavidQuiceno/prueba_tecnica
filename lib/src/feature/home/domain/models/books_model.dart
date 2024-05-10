@@ -90,6 +90,7 @@ class BookModel {
     String? price,
     String? image,
     String? url,
+    DetailBooksModel? detailBooksModel,
   }) =>
       BookModel(
         title: title ?? this.title,
@@ -98,6 +99,7 @@ class BookModel {
         price: price ?? this.price,
         image: image ?? this.image,
         url: url ?? this.url,
+        detailBooksModel: detailBooksModel ?? this.detailBooksModel,
       );
 
   Map<String, dynamic> toJson() => {

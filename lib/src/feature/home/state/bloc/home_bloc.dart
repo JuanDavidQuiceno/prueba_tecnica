@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:api_sdk/api_sdk.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:prueba_tecnica/src/common/services/local_storage.dart';
 import 'package:prueba_tecnica/src/feature/home/data/home_implementation.dart';
 import 'package:prueba_tecnica/src/feature/home/domain/models/books_model.dart';
 import 'package:prueba_tecnica/src/feature/home/domain/models/detail_book_model.dart';
@@ -112,51 +114,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     });
-    // final catModelSearch =   state.booksModel,
-    //     .where(
-    //       (element) => element.name!.toLowerCase().contains(event.query),
-    //     )
-    //     .toList();
-    // // ignore: inference_failure_on_instance_creation
-    // await Future.delayed(const Duration(milliseconds: 500)).then((value) {
-    //   return emit(
-    //     HomeSearchState(
-    //       catModel: state.catModel,
-    //       catModelSearch: catModelSearch,
-    //     ),
-    //   );
-    // });
   }
 
   FutureOr<void> _getDetailEvent(
     GetDetailEvent event,
     Emitter<HomeState> emit,
   ) async {
-    final index =
-        state.booksModel.indexWhere((element) => element.isbn13 == event.id);
-    try {
-      // si el libro existe y ya tiene el detalle no se vuelve a cargar
-      if (index != -1 && state.booksModel[index].detailBooksModel != null) {
-        return emit(
-          HomeLoadedDetailState(
-            booksModel: state.booksModel,
-            bookModel: state.booksModel[index],
-          ),
-        );
-      }
-    } catch (e) {
+    final index = state.booksModel.indexWhere(
+      (element) => element.isbn13 == event.model.isbn13,
+    );
+    _validateStorage(index, event, emit);
+    if (index != -1 && state.booksModel[index].detailBooksModel != null) {
       return emit(
-        HomeErrorDetailState(
-          message: e.toString(),
+        HomeLoadedDetailState(
           booksModel: state.booksModel,
+          bookModel: state.booksModel[index],
         ),
       );
     }
-
     // si las condiciones anteriores no se cumplen se carga el detalle del libro
     emit(HomeLoadingDetailState(booksModel: state.booksModel));
     await HomeImplementation(apiSdk: ApiSdk())
-        .getDetail(event.id)
+        .getDetail(event.model.isbn13)
         .then((value) {
       if (value.statusCode == 200) {
         try {
@@ -168,6 +147,63 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           // detalle del libro obtenido
           if (index != -1) {
             state.booksModel[index].detailBooksModel = detailModel;
+          } else {
+            // si no existe lo agregamos al stado y lo guarmos en el
+            // local storage lo buscamos en la local storage
+            state.booksModel
+                .insert(0, event.model.copyWith(detailBooksModel: detailModel));
+            final resultRecent = LocalStorage.recentSearches;
+            //============= decodificamos el string para asignarlo al modelo
+            final resultRecentDecode = (resultRecent as List).map((e) {
+              final decoded = json.decode(e as String);
+              return BookModel.fromJson(decoded as Map<String, dynamic>);
+            }).toList();
+            if (resultRecent.isNotEmpty) {
+              // buscamos el libro en la lista de libros recientes
+              final indexRecent = resultRecentDecode.indexWhere(
+                (element) => element.isbn13 == event.model.isbn13,
+              );
+              // si el libro existe lo ponemos en la primera posicion
+              if (indexRecent != -1) {
+                if (resultRecentDecode.length == 5) {
+                  resultRecentDecode.removeLast();
+                }
+                resultRecentDecode
+                  ..removeAt(indexRecent)
+                  ..insert(
+                    0,
+                    event.model.copyWith(
+                      detailBooksModel: detailModel,
+                    ),
+                  );
+                // convertimos el modelo a un mapa
+                final resultRecentEncode = resultRecentDecode
+                    .map((e) => json.encode(e.toJson()))
+                    .toList();
+                // convertimos el mapa a un string
+                LocalStorage.recentSearches = resultRecentEncode;
+              } else {
+                // si no existe lo agregamos al stado y lo guarmos en el
+                // local storage
+                resultRecentDecode.insert(0, event.model);
+                // convertimos el modelo a un mapa
+                final resultRecentEncode = resultRecentDecode
+                    .map((e) => json.encode(e.toJson()))
+                    .toList();
+                // convertimos el mapa a un string
+                LocalStorage.recentSearches = resultRecentEncode;
+              }
+            } else {
+              // si no existe lo agregamos al stado y lo guarmos en el
+              // local storage
+              resultRecentDecode.insert(0, event.model);
+              // convertimos el modelo a un mapa
+              final resultRecentEncode = resultRecentDecode
+                  .map((e) => json.encode(e.toJson()))
+                  .toList();
+              // convertimos el mapa a un string
+              LocalStorage.recentSearches = resultRecentEncode;
+            }
           }
           emit(
             HomeLoadedDetailState(
@@ -199,5 +235,94 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     });
+  }
+
+  // metodo para validar el local storage y el estado de la lista de libros
+  void _validateStorage(
+    int index,
+    GetDetailEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    try {
+      // obtenemos los datos guardados en el local storage
+      final resultRecent = LocalStorage.recentSearches;
+      if (resultRecent.isNotEmpty) {
+        //============= decodificamos el string para asignarlo al modelo
+        final resultRecentDecode = (resultRecent as List).map((e) {
+          final decoded = json.decode(e as String);
+          return BookModel.fromJson(decoded as Map<String, dynamic>);
+        }).toList();
+        // ========================
+
+        // buscamos el libro en la lista de libros recientes
+        final indexRecent = resultRecentDecode.indexWhere(
+          (element) => element.isbn13 == event.model.isbn13,
+        );
+
+        //============= si el libro no existe en la lista de libros recientes
+        // lo agregamos teniendo en cuenta que solo se guardan 5 libros
+        // recientes
+        if (indexRecent == -1) {
+          if (resultRecentDecode.length == 5) {
+            resultRecentDecode.removeLast();
+          }
+          resultRecentDecode.insert(0, event.model);
+          // convertimos el modelo a un mapa
+          final resultRecentEncode =
+              resultRecentDecode.map((e) => json.encode(e.toJson())).toList();
+          // convertimos el mapa a un string
+          LocalStorage.recentSearches = resultRecentEncode;
+          // si el libro existe lo ponemos en la primera posicion
+        } else {
+          resultRecentDecode
+            ..removeAt(indexRecent)
+            ..insert(0, event.model);
+          // convertimos el modelo a un mapa
+          final resultRecentEncode =
+              resultRecentDecode.map((e) => json.encode(e.toJson())).toList();
+          // convertimos el mapa a un string
+          LocalStorage.recentSearches = resultRecentEncode;
+        }
+        // ========================
+
+        // ignore: lines_longer_than_80_chars
+        // ============ verificacion en state de lista de libros recientes ==========
+
+        //============= verificamos si existe en la lista de estado de libros
+        // si existe lo ponemos en la primera posicion
+        if (index != -1) {
+          final booksModelTemp = state.booksModel[index].copyWith();
+          state.booksModel
+            ..removeAt(index)
+            ..insert(0, booksModelTemp);
+        } else {
+          // si no existe lo agregamos a la lista de libros
+          state.booksModel.insert(0, event.model);
+        }
+        // si el libro existe y ya tiene el detalle no se vuelve a cargar
+        if (index != -1 && state.booksModel[index].detailBooksModel != null) {
+          return emit(
+            HomeLoadedDetailState(
+              booksModel: state.booksModel,
+              bookModel: state.booksModel[index],
+            ),
+          );
+        } else {
+          emit(
+            HomeLoadedDetailState(
+              booksModel: state.booksModel,
+              bookModel: state.booksModel[index],
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      return emit(
+        HomeErrorDetailState(
+          message: e.toString(),
+          booksModel: state.booksModel,
+        ),
+      );
+    }
   }
 }

@@ -8,13 +8,10 @@ class BookCard extends StatelessWidget {
   const BookCard({
     required this.bookModel,
     required this.homeBloc,
-    this.lastText,
     super.key,
   });
   final BookModel bookModel;
   final HomeBloc homeBloc;
-  // ultima texto para la busqueda
-  final String? lastText;
 
   @override
   Widget build(BuildContext context) {

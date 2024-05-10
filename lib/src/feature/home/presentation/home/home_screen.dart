@@ -111,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: BookCard(
                           bookModel: state.searchbooksModel[index],
                           homeBloc: homeBloc,
-                          lastText: controller.text,
                         ),
                       );
                     },

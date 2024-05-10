@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:prueba_tecnica/src/common/bloc/connection/connection_cubit.dart';
+import 'package:prueba_tecnica/src/common/services/local_storage.dart';
 import 'package:prueba_tecnica/src/global_locator.dart';
 
 part 'auth_event.dart';
@@ -75,11 +76,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         const AuthFinishWithError(authStatus: AuthStatus.notAuthenticated),
       );
     } else {
-      // TODO: Aquí se debe validar si el usuario está autenticado o no para
-      // dirigirlo a la pantalla correspondiente en caso de que el usuario esté
-      // autenticado se debe dirigir a la pantalla principal
-      // en caso de que el usuario no esté autenticado se debe dirigir a la
-      // pantalla de login
       // ignore: inference_failure_on_instance_creation
       await Future.delayed(const Duration(seconds: 2)).then((value) {
         emit(

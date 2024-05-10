@@ -10,15 +10,11 @@ class BookDetailScreen extends StatefulWidget {
   const BookDetailScreen({
     required this.bookModel,
     required this.homeBloc,
-    this.lastText,
     super.key,
   });
   static const String routeName = 'bookDetailt';
   final BookModel bookModel;
   final HomeBloc homeBloc;
-  // para identificar el texto con el cual se hizo la busqueda
-  // y guardarlo en el historial
-  final String? lastText;
 
   @override
   State<BookDetailScreen> createState() => _BookDetailScreenState();
@@ -27,7 +23,7 @@ class BookDetailScreen extends StatefulWidget {
 class _BookDetailScreenState extends State<BookDetailScreen> {
   @override
   void initState() {
-    widget.homeBloc.add(GetDetailEvent(widget.bookModel.isbn13));
+    widget.homeBloc.add(GetDetailEvent(widget.bookModel));
     super.initState();
   }
 
@@ -58,7 +54,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
               image: imageNotFound,
               message: 'Ups! algo salio mal, intenta de nuevo.',
               onPressed: () {
-                widget.homeBloc.add(GetDetailEvent(widget.bookModel.isbn13));
+                widget.homeBloc.add(GetDetailEvent(widget.bookModel));
               },
             );
           } else if (state is HomeLoadedDetailState) {
@@ -177,7 +173,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                 // ignore: lines_longer_than_80_chars
                 'Parece que no hay datos o no se ha cargado el detalle del libro, Intenta de nuevo.',
             onPressed: () {
-              widget.homeBloc.add(GetDetailEvent(widget.bookModel.isbn13));
+              widget.homeBloc.add(GetDetailEvent(widget.bookModel));
             },
           );
         },
