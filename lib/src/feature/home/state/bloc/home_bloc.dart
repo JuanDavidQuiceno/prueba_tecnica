@@ -120,10 +120,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     GetDetailEvent event,
     Emitter<HomeState> emit,
   ) async {
+    _validateStorage(event, emit);
+    // validamos que que el libro este en el estado y tenga la info completa
     final index = state.booksModel.indexWhere(
       (element) => element.isbn13 == event.model.isbn13,
     );
-    _validateStorage(index, event, emit);
+    // se valida si ya se cargo del local storage al estado
     if (index != -1 && state.booksModel[index].detailBooksModel != null) {
       return emit(
         HomeLoadedDetailState(
@@ -152,58 +154,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             // local storage lo buscamos en la local storage
             state.booksModel
                 .insert(0, event.model.copyWith(detailBooksModel: detailModel));
-            final resultRecent = LocalStorage.recentSearches;
-            //============= decodificamos el string para asignarlo al modelo
-            final resultRecentDecode = (resultRecent as List).map((e) {
-              final decoded = json.decode(e as String);
-              return BookModel.fromJson(decoded as Map<String, dynamic>);
-            }).toList();
-            if (resultRecent.isNotEmpty) {
-              // buscamos el libro en la lista de libros recientes
-              final indexRecent = resultRecentDecode.indexWhere(
-                (element) => element.isbn13 == event.model.isbn13,
-              );
-              // si el libro existe lo ponemos en la primera posicion
-              if (indexRecent != -1) {
-                if (resultRecentDecode.length == 5) {
-                  resultRecentDecode.removeLast();
-                }
-                resultRecentDecode
-                  ..removeAt(indexRecent)
-                  ..insert(
-                    0,
-                    event.model.copyWith(
-                      detailBooksModel: detailModel,
-                    ),
-                  );
-                // convertimos el modelo a un mapa
-                final resultRecentEncode = resultRecentDecode
-                    .map((e) => json.encode(e.toJson()))
-                    .toList();
-                // convertimos el mapa a un string
-                LocalStorage.recentSearches = resultRecentEncode;
-              } else {
-                // si no existe lo agregamos al stado y lo guarmos en el
-                // local storage
-                resultRecentDecode.insert(0, event.model);
-                // convertimos el modelo a un mapa
-                final resultRecentEncode = resultRecentDecode
-                    .map((e) => json.encode(e.toJson()))
-                    .toList();
-                // convertimos el mapa a un string
-                LocalStorage.recentSearches = resultRecentEncode;
-              }
-            } else {
-              // si no existe lo agregamos al stado y lo guarmos en el
-              // local storage
-              resultRecentDecode.insert(0, event.model);
-              // convertimos el modelo a un mapa
-              final resultRecentEncode = resultRecentDecode
-                  .map((e) => json.encode(e.toJson()))
-                  .toList();
-              // convertimos el mapa a un string
-              LocalStorage.recentSearches = resultRecentEncode;
-            }
+            _insertStore(event.model.copyWith(detailBooksModel: detailModel));
           }
           emit(
             HomeLoadedDetailState(
@@ -237,9 +188,58 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
   }
 
+  void _insertStore(BookModel bookModel) {
+    final resultRecent = LocalStorage.recentSearches;
+    //============= decodificamos el string para asignarlo al modelo
+    final resultRecentDecode = (resultRecent as List).map((e) {
+      final decoded = json.decode(e as String);
+      return BookModel.fromJson(decoded as Map<String, dynamic>);
+    }).toList();
+    if (resultRecent.isNotEmpty) {
+      // buscamos el libro en la lista de libros recientes
+      final indexRecent = resultRecentDecode.indexWhere(
+        (element) => element.isbn13 == bookModel.isbn13,
+      );
+      // si el libro existe lo ponemos en la primera posicion
+      if (indexRecent != -1) {
+        if (resultRecentDecode.length == 5) {
+          resultRecentDecode.removeLast();
+        }
+        resultRecentDecode
+          ..removeAt(indexRecent)
+          ..insert(
+            0,
+            bookModel,
+          );
+        // convertimos el modelo a un mapa
+        final resultRecentEncode =
+            resultRecentDecode.map((e) => json.encode(e.toJson())).toList();
+        // convertimos el mapa a un string
+        LocalStorage.recentSearches = resultRecentEncode;
+      } else {
+        // si no existe lo agregamos al stado y lo guarmos en el
+        // local storage
+        resultRecentDecode.insert(0, bookModel);
+        // convertimos el modelo a un mapa
+        final resultRecentEncode =
+            resultRecentDecode.map((e) => json.encode(e.toJson())).toList();
+        // convertimos el mapa a un string
+        LocalStorage.recentSearches = resultRecentEncode;
+      }
+    } else {
+      // si no existe lo agregamos al stado y lo guarmos en el
+      // local storage
+      resultRecentDecode.insert(0, bookModel);
+      // convertimos el modelo a un mapa
+      final resultRecentEncode =
+          resultRecentDecode.map((e) => json.encode(e.toJson())).toList();
+      // convertimos el mapa a un string
+      LocalStorage.recentSearches = resultRecentEncode;
+    }
+  }
+
   // metodo para validar el local storage y el estado de la lista de libros
   void _validateStorage(
-    int index,
     GetDetailEvent event,
     Emitter<HomeState> emit,
   ) {
@@ -287,8 +287,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         // ignore: lines_longer_than_80_chars
         // ============ verificacion en state de lista de libros recientes ==========
-
         //============= verificamos si existe en la lista de estado de libros
+        final index = state.booksModel.indexWhere(
+          (element) => element.isbn13 == event.model.isbn13,
+        );
         // si existe lo ponemos en la primera posicion
         if (index != -1) {
           final booksModelTemp = state.booksModel[index].copyWith();
@@ -298,22 +300,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         } else {
           // si no existe lo agregamos a la lista de libros
           state.booksModel.insert(0, event.model);
-        }
-        // si el libro existe y ya tiene el detalle no se vuelve a cargar
-        if (index != -1 && state.booksModel[index].detailBooksModel != null) {
-          return emit(
-            HomeLoadedDetailState(
-              booksModel: state.booksModel,
-              bookModel: state.booksModel[index],
-            ),
-          );
-        } else {
-          emit(
-            HomeLoadedDetailState(
-              booksModel: state.booksModel,
-              bookModel: state.booksModel[index],
-            ),
-          );
         }
       }
     } catch (e) {

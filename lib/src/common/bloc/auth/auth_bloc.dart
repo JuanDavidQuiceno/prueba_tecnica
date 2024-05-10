@@ -5,7 +5,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:prueba_tecnica/src/common/bloc/connection/connection_cubit.dart';
-import 'package:prueba_tecnica/src/common/services/local_storage.dart';
 import 'package:prueba_tecnica/src/global_locator.dart';
 
 part 'auth_event.dart';
