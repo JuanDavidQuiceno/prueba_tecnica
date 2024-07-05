@@ -14,4 +14,12 @@ class LocalStorage {
   static set recentSearches(List<String> value) {
     prefs.setStringList('recent_searches', value);
   }
+
+  static String get token {
+    return prefs.getString('token') ?? '';
+  }
+
+  static set token(String value) {
+    prefs.setString('token', value);
+  }
 }

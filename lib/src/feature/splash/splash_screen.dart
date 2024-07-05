@@ -5,7 +5,9 @@ import 'package:custom_image/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prueba_tecnica/src/common/bloc/auth/auth_bloc.dart';
+import 'package:prueba_tecnica/src/common/services/navigation_services.dart';
 import 'package:prueba_tecnica/src/common/theme/colors.dart';
+import 'package:prueba_tecnica/src/feature/auth/presentation/login/login_screen.dart';
 import 'package:prueba_tecnica/src/feature/home/presentation/home/home_screen.dart';
 import 'package:prueba_tecnica/src/global_locator.dart';
 import 'package:prueba_tecnica/src/utils/image_app.dart';
@@ -91,20 +93,25 @@ class SplashScreenState extends State<SplashScreen>
             authBloc.add(AuthInitialEvent());
             _animationController(begin: 0.9, end: 1);
             await animationController.forward().then(
-                  (value) => {},
+                  (value) => {
+                    NavigationServices.pushAndRemoveUntil(
+                      context,
+                      screen: const LoginScreen(),
+                      routeName: LoginScreen.routeName,
+                    ),
+                  },
                 );
           }
           if (state is AuthFinishWithError) {
             _animationController(begin: 0.9, end: 1);
             await animationController.forward().then(
               (value) {
-                Navigator.pushAndRemoveUntil(
+                // de momento se envia a login hasta que se
+                // implemente la pantalla de error
+                NavigationServices.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute<void>(
-                    settings: const RouteSettings(name: HomeScreen.routeName),
-                    builder: (context) => const HomeScreen(),
-                  ),
-                  (route) => false,
+                  screen: const LoginScreen(),
+                  routeName: LoginScreen.routeName,
                 );
               },
             );
@@ -113,14 +120,10 @@ class SplashScreenState extends State<SplashScreen>
             _animationController(begin: 0.9, end: 1);
             await animationController.forward().then(
                   (value) => {
-                    Navigator.pushAndRemoveUntil(
+                    NavigationServices.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute<void>(
-                        settings:
-                            const RouteSettings(name: HomeScreen.routeName),
-                        builder: (context) => const HomeScreen(),
-                      ),
-                      (route) => false,
+                      screen: const LoginScreen(),
+                      routeName: LoginScreen.routeName,
                     ),
                   },
                 );

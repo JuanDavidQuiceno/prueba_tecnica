@@ -25,4 +25,14 @@ class AppColors {
   static const transparent = Colors.transparent;
 
   //#Define new colors status
+  // succes
+  static const success = Color(0xFF228B22);
+  // warning
+  static const warning = Color(0xFFFFA500);
+  // error
+  static const error = Color(0xFFD70926);
+  // pending
+  static const pending = Color(0xFFFF9800);
+  // inactived
+  static const inactived = Color(0xFFC4C4C4);
 }

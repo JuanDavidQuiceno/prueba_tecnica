@@ -6,13 +6,115 @@ enum IconPosition { left, right }
 
 class StyleTextField {
   static TextStyle style(BuildContext context, {Color? textColor}) {
-    return Theme.of(context).primaryTextTheme.bodyMedium!.copyWith(
+    return Theme.of(context).textTheme.bodyLarge!.copyWith(
           color: textColor ?? AppColors.textColor,
-          fontWeight: FontWeight.w400,
         );
   }
 
   static InputDecoration inputDecoration(
+    BuildContext context, {
+    bool? filled = false,
+    Color? fillColor = AppColors.hintColor,
+    String? labelText,
+    String? hintText,
+    String? helperText,
+    EdgeInsets? contentPadding,
+    bool? isDense,
+    Widget? suffixIcon,
+    Widget? prefixIcon,
+    bool? enabled = true,
+  }) {
+    return InputDecoration(
+      fillColor: fillColor ?? AppColors.transparent,
+      labelText: labelText,
+      labelStyle: Theme.of(context).textTheme.bodyLarge,
+      hintText: hintText,
+      errorMaxLines: 3,
+      // hoverColor: AppColors.primaryLightColor.withOpacity(0.2),
+      hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: AppColors.hintColor,
+            fontWeight: FontWeight.w400,
+          ),
+      helperText: helperText,
+      helperStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: AppColors.hintColor,
+            fontWeight: FontWeight.w400,
+          ),
+
+      contentPadding: contentPadding ??
+          const EdgeInsets.symmetric(
+            vertical: 13,
+            horizontal: 10,
+          ),
+      isDense: isDense ?? false,
+      suffixIcon: suffixIcon,
+      prefixIcon: prefixIcon,
+      border: DecorationInput.outline(
+        color: enabled! ? AppColors.textColor : AppColors.grey,
+      ),
+      focusedBorder: DecorationInput.outline(
+        color: enabled ? AppColors.primaryColor : AppColors.grey,
+      ),
+      focusedErrorBorder: DecorationInput.outline(
+        color: AppColors.red,
+      ),
+      disabledBorder: DecorationInput.outline(color: AppColors.textColor),
+      enabledBorder: DecorationInput.outline(
+        color: enabled ? AppColors.textColor : AppColors.grey,
+      ),
+    );
+  }
+
+  static InputDecoration inputDecorationSecondary(
+    BuildContext context, {
+    bool? filled = true,
+    Color? fillColor = AppColors.transparent,
+    String? labelText,
+    String? hintText,
+    String? helperText,
+    EdgeInsets? contentPadding,
+    bool? isDense,
+    Widget? suffixIcon,
+    Widget? prefixIcon,
+  }) {
+    return InputDecoration(
+      filled: filled,
+      fillColor: fillColor,
+      labelText: labelText,
+      labelStyle: Theme.of(context).textTheme.bodyLarge,
+      hintText: hintText,
+      errorMaxLines: 3,
+      // hoverColor: AppColors.primaryLightColor.withOpacity(0.2),
+      hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            // color: AppColors.texto300,
+            fontWeight: FontWeight.w400,
+          ),
+      helperText: helperText,
+      helperStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: AppColors.hintColor,
+            fontWeight: FontWeight.w400,
+          ),
+
+      contentPadding: contentPadding ??
+          const EdgeInsets.symmetric(
+            vertical: 13,
+            horizontal: 10,
+          ),
+      isDense: isDense ?? false,
+      suffixIcon: suffixIcon,
+      prefixIcon: prefixIcon,
+      hoverColor: AppColors.primaryColor,
+      border: DecorationInput.outline(color: AppColors.transparent),
+      focusedBorder: DecorationInput.outline(color: AppColors.primaryColor),
+      focusedErrorBorder: DecorationInput.outline(
+        color: AppColors.red,
+      ),
+      disabledBorder: DecorationInput.outline(color: AppColors.transparent),
+      enabledBorder: DecorationInput.outline(color: AppColors.transparent),
+    );
+  }
+
+  static InputDecoration inputDecorationUnit(
     BuildContext context, {
     Color? fillColor,
     String? labelText,
@@ -26,69 +128,33 @@ class StyleTextField {
     return InputDecoration(
       fillColor: fillColor ?? AppColors.transparent,
       labelText: labelText,
+      labelStyle: Theme.of(context).textTheme.bodyLarge,
       hintText: hintText,
       errorMaxLines: 3,
       // hoverColor: AppColors.primaryLightColor.withOpacity(0.2),
-      hintStyle: Theme.of(context).primaryTextTheme.bodyMedium!.copyWith(
+      hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
             color: AppColors.hintColor,
             fontWeight: FontWeight.w400,
           ),
       helperText: helperText,
-      helperStyle: Theme.of(context).primaryTextTheme.bodyMedium!.copyWith(
+      helperStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
             color: AppColors.hintColor,
             fontWeight: FontWeight.w400,
           ),
-      contentPadding: contentPadding,
-      isDense: isDense ?? false,
+      contentPadding: contentPadding ??
+          const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 2,
+          ),
+      isDense: isDense ?? true,
       suffixIcon: suffixIcon,
       prefixIcon: prefixIcon,
-      border: DecorationInput.outline(color: AppColors.textColor),
-      focusedBorder: DecorationInput.outline(color: AppColors.primaryColor),
-      focusedErrorBorder: DecorationInput.outline(
-        color: AppColors.red,
-      ),
-      disabledBorder: DecorationInput.outline(color: AppColors.textColor),
-      enabledBorder: DecorationInput.outline(color: AppColors.textColor),
-    );
-  }
-
-  static InputDecoration inputDecorationDeactive({
-    required BuildContext context,
-    Color? fillColor,
-    String? labelText,
-    String? hintText,
-    String? helperText,
-    EdgeInsets? contentPadding,
-    bool? isDense,
-    Widget? suffixIcon,
-    Widget? prefixIcon,
-  }) {
-    return InputDecoration(
-      fillColor: fillColor ?? AppColors.transparent,
-      labelText: labelText,
-      hintText: hintText,
-      errorMaxLines: 3,
-      // hoverColor: AppColors.primaryLightColor.withOpacity(0.2),
-      hintStyle: Theme.of(context).primaryTextTheme.bodyMedium!.copyWith(
-            color: AppColors.hintColor,
-            fontWeight: FontWeight.w400,
-          ),
-      helperText: helperText,
-      helperStyle: Theme.of(context).primaryTextTheme.bodyMedium!.copyWith(
-            color: AppColors.hintColor,
-            fontWeight: FontWeight.w400,
-          ),
-      contentPadding: contentPadding,
-      isDense: isDense ?? false,
-      suffixIcon: suffixIcon,
-      prefixIcon: prefixIcon,
-      border: DecorationInput.outline(color: AppColors.hintColor),
-      focusedBorder: DecorationInput.outline(color: AppColors.hintColor),
-      focusedErrorBorder: DecorationInput.outline(
+      border: DecorationInput.outline(
         color: AppColors.hintColor,
+        bordeRadius: 0,
       ),
-      disabledBorder: DecorationInput.outline(color: AppColors.hintColor),
-      enabledBorder: DecorationInput.outline(color: AppColors.hintColor),
+      focusedBorder:
+          DecorationInput.outline(color: AppColors.hintColor, bordeRadius: 0),
     );
   }
 }

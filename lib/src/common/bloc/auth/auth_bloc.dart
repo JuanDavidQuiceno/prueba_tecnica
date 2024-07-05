@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:prueba_tecnica/src/common/bloc/connection/connection_cubit.dart';
+import 'package:prueba_tecnica/src/common/services/local_storage.dart';
 import 'package:prueba_tecnica/src/global_locator.dart';
 
 part 'auth_event.dart';
@@ -75,14 +76,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         const AuthFinishWithError(authStatus: AuthStatus.notAuthenticated),
       );
     } else {
-      // ignore: inference_failure_on_instance_creation
-      await Future.delayed(const Duration(seconds: 2)).then((value) {
+      if (LocalStorage.token.isNotEmpty) {
         emit(
-          const AuthenticatedState(
+          const AuthNoAuthenticatedState(
             authStatus: AuthStatus.authenticated,
           ),
         );
-      });
+      } else {
+        // emit(
+        //   const AuthenticatedState(
+        //     authStatus: AuthStatus.authenticated,
+        //   ),
+        // );
+        // ignore: inference_failure_on_instance_creation
+        await Future.delayed(const Duration(seconds: 2)).then((value) {
+          emit(
+            const AuthenticatedState(
+              authStatus: AuthStatus.authenticated,
+            ),
+          );
+        });
+      }
     }
   }
 
