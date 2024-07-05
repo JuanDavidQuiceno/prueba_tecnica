@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:prueba_tecnica/src/feature/auth/data/auth_repository.dart';
 import 'package:prueba_tecnica/src/feature/auth/domain/models/register_model.dart';
 
 part 'register_state.dart';
@@ -85,12 +86,42 @@ class RegisterCubit extends Cubit<RegisterState> {
         model: state.model,
       ),
     );
-    await Future.delayed(const Duration(seconds: 2));
-    emit(
-      RegisterErrorState(
-        model: state.model,
-        message: 'Invalid email or password',
-      ),
+    await AuthRepository().register(model: state.model).then(
+      (value) {
+        try {
+          final body = value.body as Map<String, dynamic>;
+          if (value.statusCode == 200) {
+            emit(
+              RegisterSuccessState(
+                model: state.model,
+              ),
+            );
+          } else {
+            emit(
+              RegisterErrorState(
+                model: state.model,
+                message: body['message'] as String? ?? 'Error al registrar',
+              ),
+            );
+          }
+        } catch (e) {
+          emit(
+            RegisterErrorState(
+              model: state.model,
+              message: 'Error desconocido',
+            ),
+          );
+        }
+      },
+    ).catchError(
+      (e) {
+        emit(
+          RegisterErrorState(
+            model: state.model,
+            message: 'Error desconocido',
+          ),
+        );
+      },
     );
   }
 }

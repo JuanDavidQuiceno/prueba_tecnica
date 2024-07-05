@@ -8,7 +8,7 @@ class RegisterEndpoint extends EndpointConfig {
   final RegisterModel model;
 
   @override
-  Method get method => Method.get;
+  Method get method => Method.post;
 
   @override
   Map<String, String> get body => {

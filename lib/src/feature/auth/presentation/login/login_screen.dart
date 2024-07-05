@@ -59,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         BlocConsumer<LoginCubit, LoginState>(
           bloc: cubit,
-          listener: (context, state) {
+          listener: (_, state) {
             if (state is LoginSuccessState) {
               NavigationServices.pushAndRemoveUntil(
                 context,

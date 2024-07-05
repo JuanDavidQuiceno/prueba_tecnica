@@ -14,6 +14,15 @@
             ]
         },
         {
+            "name": "debug (development mode)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_development.dart",
+            "args": [
+                "--dart-define-from-file","api-key-dev.json",
+            ]
+        },
+        {
             "name": "prueba_tecnica (profile mode)",
             "request": "launch",
             "type": "dart",

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:prueba_tecnica/src/common/theme/colors.dart';
-import 'package:prueba_tecnica/src/feature/auth/state/login/login_cubit.dart';
+import 'package:prueba_tecnica/src/common/services/navigation_services.dart';
+import 'package:prueba_tecnica/src/feature/auth/presentation/login/login_screen.dart';
 import 'package:prueba_tecnica/src/feature/auth/state/register/register_cubit.dart';
+import 'package:prueba_tecnica/src/feature/widgets/alerts/custom_alerts.dart';
 import 'package:prueba_tecnica/src/feature/widgets/buttons/custom_elevated_button.dart';
-import 'package:prueba_tecnica/src/feature/widgets/buttons/custom_text_button.dart';
 import 'package:prueba_tecnica/src/feature/widgets/custom_loading.dart';
 import 'package:prueba_tecnica/src/feature/widgets/custom_text_field.dart';
 import 'package:prueba_tecnica/src/utils/utils.dart';
@@ -55,8 +55,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           //_content(context),
         ),
-        BlocBuilder<RegisterCubit, RegisterState>(
+        BlocConsumer<RegisterCubit, RegisterState>(
           bloc: cubit,
+          listener: (context, state) {
+            if (state is RegisterSuccessState) {
+              CustomAlert.alertDialog(
+                context,
+                type: AlertType.error,
+                title: '¡Genial!',
+                message: 'Registro exitoso',
+                textButton: 'Aceptar',
+              ).then((value) {
+                NavigationServices.popUntil(
+                  context,
+                  routeName: LoginScreen.routeName,
+                );
+              });
+            } else if (state is RegisterErrorState) {
+              CustomAlert.alertDialog(
+                context,
+                type: AlertType.error,
+                title: 'Error',
+                message: state.message,
+                textButton: 'Aceptar',
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              );
+            }
+          },
           builder: (_, state) {
             if (state is RegisterLoadingState) {
               return const CustomLoading();
@@ -94,12 +121,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 20),
             CustomTextField(
               labelText: 'Telefono',
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(10),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
               onChanged: (value) => cubit.changePhone(value),
             ),
             const SizedBox(height: 20),
             CustomTextField(
               labelText: 'Correo',
-              onChanged: (value) => cubit.changePhone(value),
+              onChanged: (value) => cubit.changeEmail(value),
             ),
             const SizedBox(height: 20),
             CustomTextField(
@@ -118,7 +150,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
             ),
             const SizedBox(height: 30),
-            // ButtonLogin(formKey: formKey, model: model),
           ],
         ),
       );

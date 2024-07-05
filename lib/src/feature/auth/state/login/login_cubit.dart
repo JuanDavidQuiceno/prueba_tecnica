@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:prueba_tecnica/src/feature/auth/data/auth_repository.dart';
 
 part 'login_state.dart';
 
@@ -51,13 +52,49 @@ class LoginCubit extends Cubit<LoginState> {
         password: state.password,
       ),
     );
-    await Future.delayed(const Duration(seconds: 2));
-    emit(
-      LoginErrorState(
-        email: state.email,
-        password: state.password,
-        message: 'Invalid email or password',
-      ),
+    await AuthRepository()
+        .login(email: state.email, password: state.password)
+        .then(
+      (value) {
+        try {
+          final body = value.body as Map<String, dynamic>;
+          if (value.statusCode == 200) {
+            emit(
+              LoginSuccessState(
+                email: state.email,
+                password: state.password,
+              ),
+            );
+          } else {
+            emit(
+              LoginErrorState(
+                email: state.email,
+                password: state.password,
+                message:
+                    body['message'] as String? ?? 'Error al iniciar sesion',
+              ),
+            );
+          }
+        } catch (e) {
+          emit(
+            LoginErrorState(
+              email: state.email,
+              password: state.password,
+              message: 'Error al iniciar sesion',
+            ),
+          );
+        }
+      },
+    ).catchError(
+      (e) {
+        emit(
+          LoginErrorState(
+            email: state.email,
+            password: state.password,
+            message: 'Error al iniciar sesion',
+          ),
+        );
+      },
     );
   }
 }

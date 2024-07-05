@@ -1,5 +1,5 @@
 {
-    "API_URL": "https://api.itbook.store",
+    "API_URL": "http://localhost:4000",
     "DEBUG": true,
     "MOCK": false
 }

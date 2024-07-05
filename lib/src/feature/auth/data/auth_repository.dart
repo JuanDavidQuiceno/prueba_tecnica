@@ -5,7 +5,7 @@ import 'package:prueba_tecnica/src/feature/auth/data/endpoint/validate_endpoint.
 import 'package:prueba_tecnica/src/feature/auth/domain/interfaces/i_auth_repository.dart';
 import 'package:prueba_tecnica/src/feature/auth/domain/models/register_model.dart';
 
-class FeatPointsRepository extends IAuthRepository {
+class AuthRepository extends IAuthRepository {
   final api = ApiSdk();
   @override
   Future<ResponseApiSdk> validate() {
