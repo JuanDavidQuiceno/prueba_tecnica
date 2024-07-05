@@ -9,6 +9,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.expaned = false,
     this.buttonStyle,
     this.textStyle,
+    this.focusNode,
   });
   final void Function()? onPressed;
   final String? text;
@@ -16,6 +17,7 @@ class CustomElevatedButton extends StatelessWidget {
   final bool? expaned;
   final ButtonStyle? buttonStyle;
   final TextStyle? textStyle;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class CustomElevatedButton extends StatelessWidget {
 
   Widget button(BuildContext context) {
     return ElevatedButton(
+      focusNode: focusNode,
       style: buttonStyle,
       onPressed: onPressed,
       child: child ??

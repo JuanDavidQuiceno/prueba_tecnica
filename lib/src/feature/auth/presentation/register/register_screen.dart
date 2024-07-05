@@ -21,6 +21,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   RegisterCubit cubit = RegisterCubit();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  FocusNode focusNode = FocusNode();
   @override
   void initState() {
     super.initState();
@@ -30,6 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void dispose() {
     formKey.currentState?.dispose();
     cubit.close();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -61,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             if (state is RegisterSuccessState) {
               CustomAlert.alertDialog(
                 context,
-                type: AlertType.error,
+                type: AlertType.success,
                 title: '¡Genial!',
                 message: 'Registro exitoso',
                 textButton: 'Aceptar',
@@ -131,6 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 20),
             CustomTextField(
               labelText: 'Correo',
+              keyboardType: TextInputType.emailAddress,
               onChanged: (value) => cubit.changeEmail(value),
             ),
             const SizedBox(height: 20),
@@ -141,9 +144,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
             const SizedBox(height: 20),
             CustomElevatedButton(
+              focusNode: focusNode,
               text: 'Registrarse',
               onPressed: () {
-                FocusScope.of(context).unfocus();
+                focusNode.requestFocus();
                 if (formKey.currentState!.validate()) {
                   cubit.submit();
                 }

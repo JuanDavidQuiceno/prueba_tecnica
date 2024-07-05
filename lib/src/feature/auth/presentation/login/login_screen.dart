@@ -24,6 +24,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   LoginCubit cubit = LoginCubit();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  FocusNode focusNode = FocusNode();
   @override
   void initState() {
     super.initState();
@@ -33,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     formKey.currentState?.dispose();
     cubit.close();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -121,13 +123,13 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 20),
             CustomTextField(
               labelText: 'Password',
-              onChanged: (value) => cubit.changeEmail(value),
+              onChanged: (value) => cubit.changePassword(value),
             ),
             const SizedBox(height: 30),
             CustomElevatedButton(
               text: 'Iniciar Sesion',
               onPressed: () {
-                FocusScope.of(context).unfocus();
+                focusNode.unfocus();
                 if (formKey.currentState!.validate()) {
                   cubit.submit();
                 }

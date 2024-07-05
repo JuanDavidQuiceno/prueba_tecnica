@@ -76,11 +76,12 @@ class LoginCubit extends Cubit<LoginState> {
             );
           }
         } catch (e) {
+          final body = value.body as Map<String, dynamic>;
           emit(
             LoginErrorState(
               email: state.email,
               password: state.password,
-              message: 'Error al iniciar sesion',
+              message: body['message'] as String? ?? 'Error al iniciar sesion',
             ),
           );
         }
@@ -91,7 +92,7 @@ class LoginCubit extends Cubit<LoginState> {
           LoginErrorState(
             email: state.email,
             password: state.password,
-            message: 'Error al iniciar sesion',
+            message: 'Error al iniciar sesionn',
           ),
         );
       },

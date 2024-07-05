@@ -22,6 +22,11 @@ class Network {
 
   Map<String, String> get headers => {
         HttpHeaders.authorizationHeader: LocalStorage.token,
+        HttpHeaders.acceptLanguageHeader: 'es',
+      };
+
+  Map<String, String> get headersLanguage => {
+        HttpHeaders.acceptLanguageHeader: 'es',
       };
 
   String get urlCatImage => const String.fromEnvironment('URL_CAT_IMAGE');

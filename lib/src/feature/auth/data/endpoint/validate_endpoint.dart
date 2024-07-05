@@ -7,7 +7,7 @@ class ValidateEndpoint extends EndpointConfig {
 
   @override
   Map<String, String> get headers => {
-        ...Environment.network.headers,
+        ...Environment.network.headersLanguage,
       };
 
   @override
