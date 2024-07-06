@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prueba_tecnica/src/feature/errors/widgets/no_data.dart';
+import 'package:prueba_tecnica/src/feature/home/presentation/widgets/video_card.dart';
 import 'package:prueba_tecnica/src/feature/home/state/videos/videos_cubit.dart';
 
 class VideosScreen extends StatefulWidget {
@@ -57,10 +58,7 @@ class _VideosScreenState extends State<VideosScreen> {
             itemCount: state.videos.length,
             itemBuilder: (_, index) {
               final video = state.videos[index];
-              return ListTile(
-                title: Text(video.title),
-                subtitle: Text(video.description),
-              );
+              return VideoCard(model: video);
             },
           );
         },

@@ -1,4 +1,6 @@
 import 'package:api_sdk/api_sdk.dart';
+import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/my_videos_create_endpoint.dart';
+import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/my_videos_delete_endpoint.dart';
 import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/my_videos_endpoint.dart';
 import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/videos_endpoint.dart';
 import 'package:prueba_tecnica/src/feature/home/data/repositories/interfaces/i_home_repository.dart';
@@ -28,5 +30,25 @@ class HomeRepository extends IHomeRepository {
       });
     }
     return apiSdk.run(endpoint: VideosEndpoint());
+  }
+
+  @override
+  Future<ResponseApiSdk> myVideosCreate({
+    required String title,
+    required String description,
+    required String path,
+  }) {
+    return apiSdk.run(
+      endpoint: MyVideosCreateEndpoint(
+        title: title,
+        description: description,
+        pathVideo: path,
+      ),
+    );
+  }
+
+  @override
+  Future<ResponseApiSdk> myVideosDelete(int id) {
+    return apiSdk.run(endpoint: MyVideosDeleteEndpoint(id: id));
   }
 }
