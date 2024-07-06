@@ -1,12 +1,10 @@
 import 'package:api_sdk/api_sdk.dart';
-import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/detail_book_endpoint.dart';
-
-import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/new_book_endpoint.dart';
-import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/search_book_endpoint.dart';
+import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/my_videos_endpoint.dart';
+import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/videos_endpoint.dart';
 import 'package:prueba_tecnica/src/feature/home/data/repositories/home_repository.dart';
-import 'package:prueba_tecnica/src/feature/home/data/repositories/mock/detail_book_mock.dart';
-import 'package:prueba_tecnica/src/feature/home/data/repositories/mock/new_book_mock.dart';
-import 'package:prueba_tecnica/src/feature/home/data/repositories/mock/search_book_mock.dart';
+import 'package:prueba_tecnica/src/feature/home/data/repositories/mock/my_videos_mock.dart';
+import 'package:prueba_tecnica/src/feature/home/data/repositories/mock/videos_mock.dart';
+
 import 'package:prueba_tecnica/src/utils/environment.dart';
 
 class HomeImplementation extends BooksRepository {
@@ -14,32 +12,22 @@ class HomeImplementation extends BooksRepository {
   final ApiSdk apiSdk;
 
   @override
-  Future<ResponseApiSdk> getNew() async {
+  Future<ResponseApiSdk> myVideos() async {
     if (Environment.isMock) {
       await Future.delayed(const Duration(seconds: 2), () {
-        return newBookResponseSuccessMock;
+        return getMyVideosSuccessMock;
       });
     }
-    return apiSdk.run(endpoint: NewEndpoint());
+    return apiSdk.run(endpoint: MyVideosEndpoint());
   }
 
   @override
-  Future<ResponseApiSdk> getDetail(String id) async {
+  Future<ResponseApiSdk> videos() async {
     if (Environment.isMock) {
       await Future.delayed(const Duration(seconds: 2), () {
-        return detailBookResponseSuccessMock;
+        return getVideosSuccessMock;
       });
     }
-    return apiSdk.run(endpoint: DetailBookEndpoint(id: id));
-  }
-
-  @override
-  Future<ResponseApiSdk> searchBook(String query) async {
-    if (Environment.isMock) {
-      await Future.delayed(const Duration(seconds: 2), () {
-        return searchBookResponseSuccessMock;
-      });
-    }
-    return apiSdk.run(endpoint: SearchBookEndpoint(query: query));
+    return apiSdk.run(endpoint: VideosEndpoint());
   }
 }
