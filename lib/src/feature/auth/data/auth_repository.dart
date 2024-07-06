@@ -1,12 +1,10 @@
 import 'package:api_sdk/api_sdk.dart';
-import 'package:prueba_tecnica/src/common/bloc/auth/auth_bloc.dart';
 import 'package:prueba_tecnica/src/common/services/local_storage.dart';
 import 'package:prueba_tecnica/src/feature/auth/data/endpoint/login_endpoint.dart';
 import 'package:prueba_tecnica/src/feature/auth/data/endpoint/register_endpoint.dart';
 import 'package:prueba_tecnica/src/feature/auth/data/endpoint/validate_endpoint.dart';
 import 'package:prueba_tecnica/src/feature/auth/domain/interfaces/i_auth_repository.dart';
 import 'package:prueba_tecnica/src/feature/auth/domain/models/register_model.dart';
-import 'package:prueba_tecnica/src/global_locator.dart';
 
 class AuthRepository extends IAuthRepository {
   final api = ApiSdk();
