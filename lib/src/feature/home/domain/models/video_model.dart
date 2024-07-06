@@ -19,14 +19,14 @@ class VideoModel {
   int id;
   String title;
   String description;
-  dynamic url;
+  String url;
   DateTime createdAt;
 
   VideoModel copyWith({
     int? id,
     String? title,
     String? description,
-    dynamic url,
+    String? url,
     DateTime? createdAt,
   }) =>
       VideoModel(

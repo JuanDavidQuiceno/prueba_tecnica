@@ -59,6 +59,8 @@ class LoginCubit extends Cubit<LoginState> {
         try {
           final body = value.body as Map<String, dynamic>;
           if (value.statusCode == 200) {
+            // guardamos el token en el storage que llega en la cabecera
+
             emit(
               LoginSuccessState(
                 email: state.email,

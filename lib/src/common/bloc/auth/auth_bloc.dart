@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:prueba_tecnica/src/common/bloc/connection/connection_cubit.dart';
+import 'package:prueba_tecnica/src/common/repository/auth_repository.dart';
 import 'package:prueba_tecnica/src/common/services/local_storage.dart';
-import 'package:prueba_tecnica/src/global_locator.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -69,34 +67,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthCheckingState(authStatus: AuthStatus.checking));
     // try {
 
-    if (global<ConnectionCubit>().state.connectionStatus ==
-            ConnectivityResult.none ||
-        global<ConnectionCubit>().state.connectionStatus == null) {
+    if (LocalStorage.token.isEmpty) {
       emit(
-        const AuthFinishWithError(authStatus: AuthStatus.notAuthenticated),
+        const AuthNoAuthenticatedState(
+          authStatus: AuthStatus.authenticated,
+        ),
       );
     } else {
-      if (LocalStorage.token.isNotEmpty) {
-        emit(
-          const AuthNoAuthenticatedState(
-            authStatus: AuthStatus.authenticated,
-          ),
-        );
-      } else {
-        // emit(
-        //   const AuthenticatedState(
-        //     authStatus: AuthStatus.authenticated,
-        //   ),
-        // );
-        // ignore: inference_failure_on_instance_creation
-        await Future.delayed(const Duration(seconds: 2)).then((value) {
-          emit(
+      await AuthRepository().auth().then((value) {
+        if (value.statusCode == 200) {
+          return emit(
             const AuthenticatedState(
               authStatus: AuthStatus.authenticated,
             ),
           );
-        });
-      }
+        } else {
+          return emit(
+            const AuthNoAuthenticatedState(
+              authStatus: AuthStatus.authenticated,
+            ),
+          );
+        }
+      });
     }
   }
 

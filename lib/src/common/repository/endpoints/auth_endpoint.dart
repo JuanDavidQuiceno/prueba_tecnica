@@ -1,7 +1,7 @@
 import 'package:api_sdk/api_sdk.dart';
 import 'package:prueba_tecnica/src/utils/environment.dart';
 
-class MyVideosEndpoint extends EndpointConfig {
+class AuthEndpoint extends EndpointConfig {
   @override
   Method get method => Method.get;
 
@@ -12,8 +12,5 @@ class MyVideosEndpoint extends EndpointConfig {
       };
 
   @override
-  Map<String, String> get queryParameters => {'page': '1', 'limit': '20'};
-
-  @override
-  String get path => 'api/videos/me';
+  String get path => 'api/auth';
 }

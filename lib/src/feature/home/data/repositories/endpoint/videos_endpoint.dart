@@ -11,7 +11,7 @@ class VideosEndpoint extends EndpointConfig {
         ...Environment.network.headers,
       };
   @override
-  Map<String, dynamic> get queryParameters => {'page': 1, 'limit': 20};
+  Map<String, dynamic> get queryParameters => {'page': '1', 'limit': '20'};
 
   @override
   String get path => 'api/videos';

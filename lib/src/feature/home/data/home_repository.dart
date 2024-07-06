@@ -1,15 +1,14 @@
 import 'package:api_sdk/api_sdk.dart';
 import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/my_videos_endpoint.dart';
 import 'package:prueba_tecnica/src/feature/home/data/repositories/endpoint/videos_endpoint.dart';
-import 'package:prueba_tecnica/src/feature/home/domain/interfaces/i_home_repository.dart';
+import 'package:prueba_tecnica/src/feature/home/data/repositories/interfaces/i_home_repository.dart';
 import 'package:prueba_tecnica/src/feature/home/data/repositories/mock/my_videos_mock.dart';
 import 'package:prueba_tecnica/src/feature/home/data/repositories/mock/videos_mock.dart';
 
 import 'package:prueba_tecnica/src/utils/environment.dart';
 
-class HomeImplementation extends IHomeRepository {
-  HomeImplementation({required this.apiSdk});
-  final ApiSdk apiSdk;
+class HomeRepository extends IHomeRepository {
+  final apiSdk = ApiSdk();
 
   @override
   Future<ResponseApiSdk> myVideos() async {
