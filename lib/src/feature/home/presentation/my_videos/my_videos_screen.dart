@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prueba_tecnica/src/common/services/navigation_services.dart';
 import 'package:prueba_tecnica/src/feature/errors/widgets/no_data.dart';
+import 'package:prueba_tecnica/src/feature/home/presentation/my_videos/add_video/add_video.dart';
 import 'package:prueba_tecnica/src/feature/home/presentation/widgets/video_card.dart';
 import 'package:prueba_tecnica/src/feature/home/state/my_videos/my_videos_cubit.dart';
 import 'package:prueba_tecnica/src/feature/widgets/alerts/custom_alerts.dart';
@@ -43,6 +45,16 @@ class _MyVideosScreenState extends State<MyVideosScreen> {
             ),
           ),
           body: _content(context),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              NavigationServices.push(
+                context,
+                screen: AddVideoScreen(cubit: cubit),
+                routeName: AddVideoScreen.routeName,
+              );
+            },
+            child: const Icon(Icons.add),
+          ),
         ),
         BlocConsumer<MyVideosCubit, MyVideosState>(
           bloc: cubit,

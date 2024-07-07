@@ -13,6 +13,9 @@ class MyVideosCreateEndpoint extends EndpointConfig {
   final String pathVideo;
 
   @override
+  BodyType get bodyType => BodyType.formData;
+
+  @override
   Method get method => Method.post;
 
   @override
