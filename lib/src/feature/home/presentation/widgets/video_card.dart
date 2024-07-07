@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba_tecnica/src/feature/home/domain/models/video_model.dart';
+import 'package:prueba_tecnica/src/feature/home/presentation/widgets/video_controller.dart';
 
 class VideoCard extends StatelessWidget {
   const VideoCard({
@@ -26,7 +27,7 @@ class VideoCard extends StatelessWidget {
                   )
                 : null,
           ),
-          // TODO: add video player
+          VideoController(model: model),
         ],
       ),
     );

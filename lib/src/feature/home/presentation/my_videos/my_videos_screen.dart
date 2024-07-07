@@ -100,11 +100,16 @@ class _MyVideosScreenState extends State<MyVideosScreen> {
           itemCount: state.videos.length,
           itemBuilder: (_, index) {
             final video = state.videos[index];
-            return VideoCard(
-              model: video,
-              onPressedDelete: () {
-                cubit.deleteVideo(video.id);
-              },
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: state.videos.length - 1 == index ? 100 : 0,
+              ),
+              child: VideoCard(
+                model: video,
+                onPressedDelete: () {
+                  cubit.deleteVideo(video.id);
+                },
+              ),
             );
           },
         );
